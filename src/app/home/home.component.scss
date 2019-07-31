@@ -1,30 +1,18 @@
 @import '../../styles.scss';
 
-@font-face {
-    font-family: gotham_medium regular;
-    src: url(../../assets/gotham-medium.ttf) format("opentype");
+
+.titulo-padrao {
+    color: $font-primary;
+    font-family: 'gotham_medium regular';
+    font-size: 2.3em;
+    margin-bottom: 30px;
 }
 
-.container-fluid {
-    background-color: $accent;
-    
-    .container {
-        padding: 100px 0 30px;
-    }
-
-    .titulo-padrao {
-        color: $font-primary;
-        font-family: 'gotham_medium regular';
-        font-size: 2.3em;
-        margin-bottom: 30px;
-    }
-
-    .subtitulo-padrao {
-        font-size: 1.6em;
-        line-height: 1.4em;
-        margin-bottom: 30px;
-        font-family: 'gotham_medium regular';
-    }
+.subtitulo-padrao {
+    font-size: 1.6em;
+    line-height: 1.4em;
+    margin-bottom: 30px;
+    font-family: 'gotham_medium regular';
 }
 
 .box-info {
