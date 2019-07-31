@@ -1,17 +1,54 @@
 <div class="container">
 
-        <h1 class="titulo-padrao"> Relatórios operáveis odifjeofsiojviodj</h1>
-        <h2 class="subtitulo-padrao"> Selecione uma das opções para começar </h2>
-    
-        <div class="row linha-box">
-            <button class="col-sm btn box-info" routerLink="/alunos">
-                <i class="fa fa-edit fa-3x"></i>
-                <h5>alunos</h5>
-            </button>
-    
-            <button class="col-sm btn box-info">
-                <i class="fa fa-book fa-3x"></i>
-                <h5>professores</h5>
-            </button>
+
+    <div>
+        <button class="titulo-padrao btn dropdown-toggle" type="button" (click)="showFiltros()">
+            Alunos
+        </button>
+        <div class="form-filtros" *ngIf="bFiltros">
+            <button class="close" (click)="bFiltros = false"><i class="fa fa-times"></i></button>
+
+            <h5>Filtrar registros</h5>
+            <form [formGroup]="oForm">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Série</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01" formControlName="cbxSerie">
+                        <option selected value="">Todas</option>
+                        <option *ngFor="let oSerie of aSeries" [value]="oSerie.id">
+                            {{ oSerie.name }}</option>
+                    </select>
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect02">Classe</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect02" formControlName="cbxClasse">
+                        <option selected value="">Todas</option>
+                        <option *ngFor="let oClasse of aClasses" [value]="oClasse.id">
+                            {{ oClasse.name }}</option>
+                    </select>
+                </div>
+            </form>
+
         </div>
     </div>
+
+    <table class="table tabela">
+        <thead class="cabecalho">
+            <tr>
+                <th scope="col">R.A.</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Série</th>
+                <th scope="col">Classe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let oData of aDadosFiltrados">
+                <th scope="row">{{oData.ra}}</th>
+                <td>{{oData.nome}}</td>
+                <td>{{oData.serie.descricao}}</td>
+                <td>{{oData.classe.descricao}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

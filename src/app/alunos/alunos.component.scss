@@ -1,0 +1,49 @@
+@import '../../styles.scss';
+
+.titulo-padrao {
+    color: $font-primary;
+    font-family: 'gotham_medium regular';
+    font-size: 2em;
+    background-color: transparent;
+    border: 0px transparent;
+
+    &:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
+}
+
+.cabecalho {
+    background: $dark;
+    color: #fff;
+}
+
+.tabela {
+    background-color: #fff;
+}
+
+.form-filtros {
+    background-color: #fff;
+    color: $font-primary;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.close {
+    background-color: transparent;
+    border: 0 none;
+    float: right;
+    color: $font-primary;
+    
+    &:focus {
+        box-shadow: 0 0 0 0;
+        border: 0 none;
+        outline: 0;
+    }
+}
+
+.no-data {
+    text-align: center;
+}
