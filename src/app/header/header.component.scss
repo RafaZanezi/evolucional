@@ -1,0 +1,30 @@
+@import '../../styles.scss';
+
+a {
+    width: auto;
+
+    img {
+        height: 42px;
+        width: 235px;
+    }
+}
+
+.navbar {
+    background-color: #fff;
+    padding: 0px
+}
+
+
+button.btn {
+    background-color: transparent;
+    text-transform: uppercase;
+    color: $dark;
+    border-radius: 0px;
+    display: block;
+    padding: 11.5px 15px 11.5px;
+
+    &:hover {
+        background-color: #f6f6f6;
+        border-bottom: solid 5px $dark;
+    }
+}

@@ -1,0 +1,23 @@
+@import '../../styles.scss';
+
+.footer-evolucional {
+    background: #00223c;
+    padding: 35px 0;
+    color: #FFF;
+    bottom: 0px;
+
+    .menu-footer li {
+        list-style: none;
+        a {
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+                color: $font-primary
+            }
+        }
+    
+    }
+
+
+}
