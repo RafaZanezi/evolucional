@@ -17,6 +17,32 @@
 .cabecalho {
     background: $dark;
     color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-edit {
+    display: none;
+}
+
+.row.body {
+    &:hover {
+        background-color: $accent;
+        color: transparent;
+        .btn-edit {
+            display: inline;
+            background-color: $font-primary;
+            color: #fff;
+        }
+        .info {
+            display: none;
+        }
+    }
+}
+
+.info {
+    padding: 10px;
+    text-align: center;
 }
 
 .tabela {

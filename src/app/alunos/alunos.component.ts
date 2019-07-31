@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../services/database.service';
 import { forkJoin, Subject } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Aluno } from '../model/aluno.model';
 
 
 @Component({
@@ -19,6 +20,8 @@ export class AlunosComponent implements OnInit {
   bFiltros: boolean;
 
   oForm: FormGroup;
+
+  nIdEdicao: number;
 
   constructor(
     private oService: DatabaseService,
@@ -65,6 +68,10 @@ export class AlunosComponent implements OnInit {
     this.bFiltros = !this.bFiltros;
   }
 
+  editar(nId: number) {
+    this.nIdEdicao = nId;
+  }
+
   private listar() {
     this.aDados = new Array<any>();
 
@@ -72,7 +79,7 @@ export class AlunosComponent implements OnInit {
       const oSerie = this.aSeries.find(serie => serie.id === item.degreeId);
       const oClasse = this.aClasses.find(classe => classe.id === item.classId);
 
-      const oAluno = {
+      const oAluno: Aluno = {
         idAluno: item.id,
         ra: item.ra,
         nome: item.name,

@@ -29,26 +29,31 @@
                     </select>
                 </div>
             </form>
-
         </div>
     </div>
 
-    <table class="table tabela">
-        <thead class="cabecalho">
-            <tr>
-                <th scope="col">R.A.</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Série</th>
-                <th scope="col">Classe</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let oData of aDadosFiltrados">
-                <th scope="row">{{oData.ra}}</th>
-                <td>{{oData.nome}}</td>
-                <td>{{oData.serie.descricao}}</td>
-                <td>{{oData.classe.descricao}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="col-sm tabela">
+        <div class="row cabecalho">
+            <div class="col-sm">R.A.</div>
+            <div class="col-sm">Nome</div>
+            <div class="col-sm">Série</div>
+            <div class="col-sm">Classe</div>
+        </div>
+
+        <div *ngFor="let oData of aDadosFiltrados">
+            <div class="row body" *ngIf="oData.idAluno != nIdEdicao; else form">
+                <div class="col-sm info">{{oData.ra}}</div>
+                <div class="col-sm info">{{oData.nome}}</div>
+                <div class="col-sm info">{{oData.serie.descricao}}</div>
+                <div class="col-sm info">{{oData.classe.descricao}}</div>
+                <button type="button" class="btn-edit btn btn-lg btn-block" (click)="editar(oData.idAluno)">Editar
+                    registro</button>
+            </div>
+            <ng-template #form>
+                <div class="row body">
+                    <app-alunos-form [aluno]="oData"></app-alunos-form>
+                </div>
+            </ng-template>
+        </div>
+    </div>
 </div>

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { AlunosFormComponent } from './alunos/form/alunos-form.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     HomeComponent,
     FooterComponent,
-    AlunosComponent
+    AlunosComponent,
+    AlunosFormComponent
   ],
   imports: [
     BrowserModule,
