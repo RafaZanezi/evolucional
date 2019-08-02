@@ -1,7 +1,7 @@
 <div class="container">
     <div>
         <button class="titulo-padrao btn dropdown-toggle" type="button" (click)="showFiltros()">
-            Alunos
+            Professores
         </button>
         <div class="form-filtros" *ngIf="bFiltros">
             <button class="close" (click)="close()"><i class="fa fa-times"></i></button>
@@ -32,27 +32,31 @@
 
     <div class="col-sm tabela">
         <div class="row cabecalho">
-            <div class="col-sm">R.A.</div>
             <div class="col-sm">Nome</div>
-            <div class="col-sm">Série</div>
-            <div class="col-sm">Classe</div>
+            <div class="col-sm">Matéria</div>
+            <div class="col-sm">Séries</div>
+            <!-- <div class="col-sm">Classes</div> -->
         </div>
 
         <div *ngFor="let oData of aDadosPaginados">
-            <div class="row body" *ngIf="oData.idAluno != nIdEdicao; else form">
-                <div class="col-sm info">{{oData.ra}}</div>
+            <div class="row body">
                 <div class="col-sm info">{{oData.nome}}</div>
-                <div class="col-sm info">{{oData.serie.descricao}}</div>
-                <div class="col-sm info">{{oData.classe.descricao}}</div>
-                <button type="button" class="btn-edit btn btn-lg btn-block" (click)="editar(oData.idAluno)">Editar
-                    registro</button>
-            </div>
-            <ng-template #form>
-                <div class="row body">
-                    <app-alunos-form class="col-sm form" [aluno]="oData" (concluir)="atualizaDado($event)">
-                    </app-alunos-form>
+                <div class="col-sm info">{{oData.assunto}}</div>
+                <div class="col-sm info">
+                    <div *ngFor="let oSe of oData.series">
+                        {{oSe.descricao}}
+
+                        <label>(Classes: <span *ngFor="let oCl of oSe.classes">
+                                {{ oCl.descricao }}
+                            </span>)
+                        </label>
+
+                    </div>
                 </div>
-            </ng-template>
+
+
+                <!-- <div class="col-sm info">{{oData.classe.descricao}}</div> -->
+            </div>
         </div>
     </div>
 
@@ -85,4 +89,4 @@
 </div>
 
 <button class="btn gera-registro" routerLink="../">Voltar</button>
-<button class="btn gera-registro" (click)="novosRegistros()">Gerar registros</button>
+<button class="btn gera-registro" (click)="novosRegistros()">Adicionar</button>

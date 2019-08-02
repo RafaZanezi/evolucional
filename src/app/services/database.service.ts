@@ -24,8 +24,6 @@ export class DatabaseService {
     return this.oHttp.get<any>(`${this.sUrl}/degrees.json`);
   }
 
-
-
   buscarProfessores() {
     return this.oHttp.get<any>(`${this.sUrl}/teachers.json`);
   }

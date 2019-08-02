@@ -4,19 +4,23 @@ import { forkJoin, Subject } from 'rxjs';
 import { Aluno } from '../model/aluno.model';
 import { DatabaseService } from '../services/database.service';
 
-
 @Component({
-  selector: 'app-alunos',
-  templateUrl: './alunos.component.html',
-  styleUrls: ['./alunos.component.scss']
+  selector: 'app-professores',
+  templateUrl: './professores.component.html',
+  styleUrls: ['./professores.component.scss']
 })
-export class AlunosComponent implements OnInit {
+export class ProfessoresComponent implements OnInit {
+
+  aProfessores: Array<any>;
+  aAssuntos: Array<any>;
+  aRelacionamentos: Array<any>;
+
   aAlunos: Array<any>;
   aSeries: Array<any>;
   aClasses: Array<any>;
-  aDados: Array<Aluno>;
-  aDadosFiltrados: Array<Aluno>;
-  aDadosPaginados: Array<Aluno>;
+  aDados: Array<any>;
+  aDadosFiltrados: Array<any>;
+  aDadosPaginados: Array<any>;
 
   bFiltros: boolean;
   oForm: FormGroup;
@@ -139,25 +143,40 @@ export class AlunosComponent implements OnInit {
   private listar() {
     this.aDados = new Array<any>();
 
-    this.aAlunos.forEach(item => {
-      const oSerie = this.aSeries.find(serie => serie.id === item.degreeId);
-      const oClasse = this.aClasses.find(classe => classe.id === item.classId);
+    this.aRelacionamentos.forEach(item => {
+      const oProfessor = this.aProfessores.find(professor => professor.id === item.teacherId);
+      const oAssunto = this.aAssuntos.find(assunto => assunto.id === item.matterId);
 
-      const oAluno: Aluno = {
-        idAluno: item.id,
-        ra: item.ra,
-        nome: item.name,
-        serie: {
-          idSerie: item.degreeId,
-          descricao: oSerie ? oSerie.name : null
-        },
-        classe: {
-          idClasse: item.classId,
-          descricao: oClasse ? oClasse.name : null
-        }
+      const oRelacionamento: any = {
+        idProfessor: item.teacherId,
+        nome: oProfessor ? oProfessor.name : null,
+        assunto: oAssunto ? oAssunto.name : null,
       }
 
-      this.aDados.push(oAluno);
+      oRelacionamento.series = new Array<any>();
+
+      item.degrees.forEach(element => {
+        const oSerie = this.aSeries.find(serie => serie.id === element.degreeId);
+
+        const serie = {
+          idSerie: element.degreeId,
+          descricao: oSerie ? oSerie.name : null,
+          classes: element.classes.map(cl => {
+            const oClasse = this.aClasses.find(classe => classe.id === cl.classId);
+
+            const classe = {
+              idClasse: cl.classId,
+              descricao: oClasse ? oClasse.name : null
+            }
+            return classe;
+          })
+        }
+
+        oRelacionamento.series.push(serie);
+      });
+      console.log(oRelacionamento);
+
+      this.aDados.push(oRelacionamento);
     });
 
     this.aDadosFiltrados = this.aDados;
@@ -172,7 +191,7 @@ export class AlunosComponent implements OnInit {
   }
 
   paginacao(nIndex?: number) {
-    if(nIndex) {
+    if (nIndex) {
       this.nPagIni = (nIndex * 10) - this.nPagTam;
     } else {
       this.nPagIni = this.nPagIni + 10;
@@ -181,7 +200,7 @@ export class AlunosComponent implements OnInit {
   }
 
   paginacaoPrev() {
-    if(this.nPagIni > 0) {
+    if (this.nPagIni > 0) {
       this.nPagIni = this.nPagIni - 10;
       this.listar();
     }
@@ -191,14 +210,22 @@ export class AlunosComponent implements OnInit {
     const oSubject = new Subject();
     const aRequests = [];
 
-    aRequests.push(this.oService.buscarAlunos());
+    aRequests.push(this.oService.buscarRelacionamentos());
+    aRequests.push(this.oService.buscarProfessores());
+    aRequests.push(this.oService.buscarAssuntos());
+
     aRequests.push(this.oService.buscarClasses());
     aRequests.push(this.oService.buscarSeries());
 
     forkJoin(aRequests).subscribe(res => {
-      this.aAlunos = res[0];
-      this.aClasses = res[1].classes;
-      this.aSeries = res[2];
+      this.aRelacionamentos = res[0];
+      this.aProfessores = res[1];
+      this.aAssuntos = res[2]
+      this.aClasses = res[3].classes;
+      this.aSeries = res[4];
+
+      console.log(this.aRelacionamentos);
+
 
       oSubject.next();
     });
@@ -213,5 +240,4 @@ export class AlunosComponent implements OnInit {
   get cbxClasse() {
     return this.oForm.get('cbxClasse');
   }
-
 }
