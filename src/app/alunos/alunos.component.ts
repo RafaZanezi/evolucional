@@ -18,9 +18,7 @@ export class AlunosComponent implements OnInit {
   aDadosFiltrados: Array<any>;
 
   bFiltros: boolean;
-
   oForm: FormGroup;
-
   nIdEdicao: number;
 
   constructor(
@@ -70,6 +68,20 @@ export class AlunosComponent implements OnInit {
 
   editar(nId: number) {
     this.nIdEdicao = nId;
+  }
+
+  atualizaDado(oAluno: Aluno) {
+    const nIndexAluno = this.aAlunos.findIndex(item => item.id === this.nIdEdicao);
+    this.aAlunos[nIndexAluno].name = oAluno.nome;
+    this.aAlunos[nIndexAluno].classId = oAluno.classe.idClasse;
+    this.nIdEdicao = null;
+    this.listar();
+  }
+
+  close(){
+    this.bFiltros = false;
+    this.oForm.reset();
+    this.listar();  
   }
 
   private listar() {

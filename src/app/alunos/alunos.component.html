@@ -1,12 +1,10 @@
 <div class="container">
-
-
     <div>
         <button class="titulo-padrao btn dropdown-toggle" type="button" (click)="showFiltros()">
             Alunos
         </button>
         <div class="form-filtros" *ngIf="bFiltros">
-            <button class="close" (click)="bFiltros = false"><i class="fa fa-times"></i></button>
+            <button class="close" (click)="close()"><i class="fa fa-times"></i></button>
 
             <h5>Filtrar registros</h5>
             <form [formGroup]="oForm">
@@ -51,7 +49,7 @@
             </div>
             <ng-template #form>
                 <div class="row body">
-                    <app-alunos-form [aluno]="oData"></app-alunos-form>
+                    <app-alunos-form class="col-sm form" [aluno]="oData" (concluir)="atualizaDado($event)"></app-alunos-form>
                 </div>
             </ng-template>
         </div>

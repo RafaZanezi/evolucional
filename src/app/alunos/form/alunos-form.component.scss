@@ -1,0 +1,10 @@
+@import '../../../styles.scss';
+
+button {
+    background-color: #fff;
+    color: $dark;
+
+    &:hover {
+        background-color: transparent;
+    }
+}
