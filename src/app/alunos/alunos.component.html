@@ -4,7 +4,7 @@
             Alunos
         </button>
         <div class="form-filtros" *ngIf="bFiltros">
-            <button class="close" (click)="close()"><i class="fa fa-times"></i></button>
+            <button type="button" class="close" (click)="close()"><i class="fa fa-times"></i></button>
 
             <h5>Filtrar registros</h5>
             <form [formGroup]="oForm">
@@ -84,5 +84,5 @@
 
 </div>
 
-<button class="btn gera-registro" routerLink="../">Voltar</button>
-<button class="btn gera-registro" (click)="novosRegistros()">Gerar registros</button>
+<button class="btn gera-registro" type="button" routerLink="../">Voltar</button>
+<button class="btn gera-registro" type="button" (click)="novosRegistros()">Gerar registros</button>

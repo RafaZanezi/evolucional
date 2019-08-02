@@ -65,6 +65,15 @@ export class AlunosComponent implements OnInit {
       }
 
       this.aDadosFiltrados = aFiltrados;
+      this.aDadosPaginados = new Array<any>();
+
+      for (let index = this.nPagIni; index < this.nPagTam + this.nPagIni; index++) {
+        const oElement = this.aDadosFiltrados[index];
+        if (oElement) {
+          this.aDadosPaginados.push(oElement);
+        }
+      }
+
     }
   }
 
@@ -82,6 +91,7 @@ export class AlunosComponent implements OnInit {
     this.aAlunos[nIndexAluno].classId = oAluno.classe.idClasse;
     this.nIdEdicao = null;
     this.listar();
+    this.filtrar();
   }
 
   novosRegistros() {
@@ -103,7 +113,6 @@ export class AlunosComponent implements OnInit {
     }
     this.listar();
   }
-
 
   /**
    * Função recursiva para impedir a criação de duas matrículas iguais
@@ -134,6 +143,24 @@ export class AlunosComponent implements OnInit {
     this.bFiltros = false;
     this.oForm.reset();
     this.listar();
+  }
+
+  paginacao(nIndex?: number) {
+    if (nIndex) {
+      this.nPagIni = (nIndex * 10) - this.nPagTam;
+    } else {
+      this.nPagIni = this.nPagIni + 10;
+    }
+    this.listar();
+    this.filtrar();
+  }
+
+  paginacaoPrev() {
+    if (this.nPagIni > 0) {
+      this.nPagIni = this.nPagIni - 10;
+      this.listar();
+      this.filtrar();
+    }
   }
 
   private listar() {
@@ -168,22 +195,6 @@ export class AlunosComponent implements OnInit {
       if (oElement) {
         this.aDadosPaginados.push(oElement);
       }
-    }
-  }
-
-  paginacao(nIndex?: number) {
-    if(nIndex) {
-      this.nPagIni = (nIndex * 10) - this.nPagTam;
-    } else {
-      this.nPagIni = this.nPagIni + 10;
-    }
-    this.listar();
-  }
-
-  paginacaoPrev() {
-    if(this.nPagIni > 0) {
-      this.nPagIni = this.nPagIni - 10;
-      this.listar();
     }
   }
 
