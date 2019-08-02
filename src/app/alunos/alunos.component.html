@@ -38,7 +38,7 @@
             <div class="col-sm">Classe</div>
         </div>
 
-        <div *ngFor="let oData of aDadosFiltrados">
+        <div *ngFor="let oData of aDadosPaginados">
             <div class="row body" *ngIf="oData.idAluno != nIdEdicao; else form">
                 <div class="col-sm info">{{oData.ra}}</div>
                 <div class="col-sm info">{{oData.nome}}</div>
@@ -49,9 +49,48 @@
             </div>
             <ng-template #form>
                 <div class="row body">
-                    <app-alunos-form class="col-sm form" [aluno]="oData" (concluir)="atualizaDado($event)"></app-alunos-form>
+                    <app-alunos-form class="col-sm form" [aluno]="oData" (concluir)="atualizaDado($event)">
+                    </app-alunos-form>
                 </div>
             </ng-template>
         </div>
     </div>
+
+    <nav *ngIf="aDadosFiltrados && aDadosFiltrados.length > 10" aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <button type="button" class="page-link" (click)="paginacaoPrev()"><span
+                        aria-hidden="true">&laquo;</span></button>
+            </li>
+
+            <li class="page-item">
+                <button type="button" class="page-link" (click)="paginacao(1)">1</button>
+            </li>
+
+            <li class="page-item">
+                <button type="button" class="page-link" (click)="paginacao(2)">2</button>
+            </li>
+
+            <li class="page-item">
+                <button type="button" class="page-link" (click)="paginacao(3)">3</button>
+            </li>
+
+            <!-- <label *ngFor="let item of getPaginator()">
+                <li class="page-item">
+                    <button type="button" class="page-link"
+                        (click)="paginacao(3 + item.index)">{{ item.index }}</button>
+                </li>
+            </label> -->
+
+
+
+            <li class="page-item">
+                <button type="button" class="page-link" (click)="paginacao()"><span
+                        aria-hidden="true">&raquo;</span></button>
+            </li>
+        </ul>
+    </nav>
+
 </div>
+
+<button class="btn gera-registro" (click)="novosRegistros()">Gerar registros</button>

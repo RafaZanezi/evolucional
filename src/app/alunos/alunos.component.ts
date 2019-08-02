@@ -16,10 +16,14 @@ export class AlunosComponent implements OnInit {
   aClasses: Array<any>;
   aDados: Array<any>;
   aDadosFiltrados: Array<any>;
+  aDadosPaginados: Array<any>;
 
   bFiltros: boolean;
   oForm: FormGroup;
   nIdEdicao: number;
+
+  nPagIni: number;
+  nPagTam: number;
 
   constructor(
     private oService: DatabaseService,
@@ -31,6 +35,8 @@ export class AlunosComponent implements OnInit {
     });
 
     this.bFiltros = false;
+    this.nPagIni = 0;
+    this.nPagTam = 10;
 
     this.cbxSerie.valueChanges.subscribe(() => this.filtrar());
     this.cbxClasse.valueChanges.subscribe(() => this.filtrar());
@@ -78,10 +84,56 @@ export class AlunosComponent implements OnInit {
     this.listar();
   }
 
-  close(){
+  novosRegistros() {
+    for (let index = 0; index < 300; index++) {
+      const randSerie = this.aSeries[Math.floor(Math.random() * this.aSeries.length)].id;
+      const randClasse = this.aClasses[Math.floor(Math.random() * this.aClasses.length)].id;
+      const sNome = `Nome do aluno ${this.aAlunos.length + 1}`;
+      const ra = this.gerarMatricula();
+
+      const oAluno = {
+        id: this.aAlunos.length + 1,
+        ra: ra,
+        name: sNome,
+        degreeId: randSerie,
+        classId: randClasse
+      };
+
+      this.aAlunos.push(oAluno);
+    }
+    this.listar();
+  }
+
+
+  /**
+   * Função recursiva para impedir a criação de duas matrículas iguais
+   */
+  gerarMatricula() {
+    const ra = Math.floor(Math.random() * (999999 + 1));
+
+    if (this.aAlunos.some(item => item.ra === ra)) {
+      this.gerarMatricula();
+    } else {
+      return ra;
+    }
+  }
+
+  getPaginator() {
+    const oPag = [];
+    for (let index = 0; index < Math.round(this.aDadosFiltrados.length / this.nPagTam); index++) {
+      const oIndex = {
+        index: index + 1
+      }
+      oPag.push(oIndex);
+    }
+
+    return oPag;
+  }
+
+  close() {
     this.bFiltros = false;
     this.oForm.reset();
-    this.listar();  
+    this.listar();
   }
 
   private listar() {
@@ -109,6 +161,30 @@ export class AlunosComponent implements OnInit {
     });
 
     this.aDadosFiltrados = this.aDados;
+    this.aDadosPaginados = new Array<any>();
+
+    for (let index = this.nPagIni; index < this.nPagTam + this.nPagIni; index++) {
+      const oElement = this.aDadosFiltrados[index];
+      if (oElement) {
+        this.aDadosPaginados.push(oElement);
+      }
+    }
+  }
+
+  paginacao(nIndex?: number) {
+    if(nIndex) {
+      this.nPagIni = (nIndex * 10) - this.nPagTam;
+    } else {
+      this.nPagIni = this.nPagIni + 10;
+    }
+    this.listar();
+  }
+
+  paginacaoPrev() {
+    if(this.nPagIni > 0) {
+      this.nPagIni = this.nPagIni - 10;
+      this.listar();
+    }
   }
 
   private buscarDados() {
