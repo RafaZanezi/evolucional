@@ -24,6 +24,7 @@ export class ProfessoresComponent implements OnInit {
 
   bFiltros: boolean;
   oForm: FormGroup;
+  oDetalhar: any;
   nIdEdicao: number;
 
   nPagIni: number;
@@ -40,7 +41,7 @@ export class ProfessoresComponent implements OnInit {
 
     this.bFiltros = false;
     this.nPagIni = 0;
-    this.nPagTam = 10;
+    this.nPagTam = 5;
 
     this.cbxSerie.valueChanges.subscribe(() => this.filtrar());
     this.cbxClasse.valueChanges.subscribe(() => this.filtrar());
@@ -72,42 +73,18 @@ export class ProfessoresComponent implements OnInit {
     }
   }
 
+  detalharAlunos(serie: any, sNomeProf: string) {
+    this.oDetalhar = {};
+    this.oService.buscarAlunos().subscribe(res => {
+      this.oDetalhar.noProfessor = sNomeProf;
+      this.oDetalhar.serie = serie.descricao;
+      this.oDetalhar.alunos = res.filter(item => item.degreeId === serie.idSerie);
+    })
+  }
+
   showFiltros() {
     this.bFiltros = !this.bFiltros;
   }
-
-  editar(nId: number) {
-    this.nIdEdicao = nId;
-  }
-
-  atualizaDado(oAluno: Aluno) {
-    const nIndexAluno = this.aAlunos.findIndex(item => item.id === this.nIdEdicao);
-    this.aAlunos[nIndexAluno].name = oAluno.nome;
-    this.aAlunos[nIndexAluno].classId = oAluno.classe.idClasse;
-    this.nIdEdicao = null;
-    this.listar();
-  }
-
-  novosRegistros() {
-    for (let index = 0; index < 300; index++) {
-      const randSerie = this.aSeries[Math.floor(Math.random() * this.aSeries.length)].id;
-      const randClasse = this.aClasses[Math.floor(Math.random() * this.aClasses.length)].id;
-      const sNome = `Nome do aluno ${this.aAlunos.length + 1}`;
-      const ra = this.gerarMatricula();
-
-      const oAluno = {
-        id: this.aAlunos.length + 1,
-        ra: ra,
-        name: sNome,
-        degreeId: randSerie,
-        classId: randClasse
-      };
-
-      this.aAlunos.push(oAluno);
-    }
-    this.listar();
-  }
-
 
   /**
    * Função recursiva para impedir a criação de duas matrículas iguais
@@ -138,6 +115,24 @@ export class ProfessoresComponent implements OnInit {
     this.bFiltros = false;
     this.oForm.reset();
     this.listar();
+  }
+
+  paginacao(nIndex?: number) {
+    if (nIndex) {
+      this.nPagIni = (nIndex * 10) - this.nPagTam;
+    } else {
+      this.nPagIni = this.nPagIni + 10;
+    }
+    this.listar();
+    this.filtrar();
+  }
+
+  paginacaoPrev() {
+    if (this.nPagIni > 0) {
+      this.nPagIni = this.nPagIni - 10;
+      this.listar();
+      this.filtrar();
+    }
   }
 
   private listar() {
@@ -174,7 +169,6 @@ export class ProfessoresComponent implements OnInit {
 
         oRelacionamento.series.push(serie);
       });
-      console.log(oRelacionamento);
 
       this.aDados.push(oRelacionamento);
     });
@@ -187,22 +181,6 @@ export class ProfessoresComponent implements OnInit {
       if (oElement) {
         this.aDadosPaginados.push(oElement);
       }
-    }
-  }
-
-  paginacao(nIndex?: number) {
-    if (nIndex) {
-      this.nPagIni = (nIndex * 10) - this.nPagTam;
-    } else {
-      this.nPagIni = this.nPagIni + 10;
-    }
-    this.listar();
-  }
-
-  paginacaoPrev() {
-    if (this.nPagIni > 0) {
-      this.nPagIni = this.nPagIni - 10;
-      this.listar();
     }
   }
 
@@ -225,8 +203,6 @@ export class ProfessoresComponent implements OnInit {
       this.aSeries = res[4];
 
       console.log(this.aRelacionamentos);
-
-
       oSubject.next();
     });
 

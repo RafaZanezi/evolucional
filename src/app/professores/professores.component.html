@@ -35,27 +35,30 @@
             <div class="col-sm">Nome</div>
             <div class="col-sm">Matéria</div>
             <div class="col-sm">Séries</div>
-            <!-- <div class="col-sm">Classes</div> -->
         </div>
 
         <div *ngFor="let oData of aDadosPaginados">
             <div class="row body">
                 <div class="col-sm info">{{oData.nome}}</div>
                 <div class="col-sm info">{{oData.assunto}}</div>
-                <div class="col-sm info">
+                <div class="info">
                     <div *ngFor="let oSe of oData.series">
-                        {{oSe.descricao}}
-
-                        <label>(Classes: <span *ngFor="let oCl of oSe.classes">
-                                {{ oCl.descricao }}
-                            </span>)
-                        </label>
-
+                        <div class="row">
+                            <div class="col-sm">
+                                {{oSe.descricao}}
+                                (Classes: <span *ngFor="let oCl of oSe.classes">
+                                    {{ oCl.descricao }}
+                                </span>)
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-edit" (click)="detalharAlunos(oSe, oData.nome)"
+                                    data-toggle="modal" data-target="#modalDetalhar">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
-                <!-- <div class="col-sm info">{{oData.classe.descricao}}</div> -->
             </div>
         </div>
     </div>
@@ -89,4 +92,49 @@
 </div>
 
 <button class="btn gera-registro" routerLink="../">Voltar</button>
-<button class="btn gera-registro" (click)="novosRegistros()">Adicionar</button>
+<button class="btn gera-registro" data-toggle="modal" data-target="#formModal">Adicionar</button>
+
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Novo relacionamento</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <app-professores-form></app-professores-form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetalhar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="oDetalhar" id="exampleModalLabel">{{oDetalhar.noProfessor}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="oDetalhar">
+                <label>{{oDetalhar.serie}}</label>
+
+                <div *ngFor="let al of oDetalhar.alunos">
+                    <label>{{al.name}}</label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

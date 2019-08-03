@@ -63,3 +63,11 @@
     background-color: $dark;
     color: #fff;
 }
+
+.btn-edit {
+    // display: inline;
+    background-color: $font-primary;
+    color: #fff;
+    margin: 5px;   
+    float: right; 
+}
