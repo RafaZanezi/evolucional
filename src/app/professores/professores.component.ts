@@ -58,19 +58,43 @@ export class ProfessoresComponent implements OnInit {
       this.listar();
     } else {
       if (Number(this.cbxSerie.value)) {
-        aFiltrados = this.aDados.filter(item => item.serie.idSerie === Number(this.cbxSerie.value));
+        aFiltrados = this.aDados.filter(item => item.series.some(serie => serie.idSerie === Number(this.cbxSerie.value)));
       }
 
       if (Number(this.cbxClasse.value)) {
         if (aFiltrados.length > 0) {
-          aFiltrados = aFiltrados.filter(item => item.classe.idClasse === Number(this.cbxClasse.value));
+          aFiltrados = aFiltrados.filter(item => item.series.some(serie => serie.classes.some(classe => classe.idClasse === Number(this.cbxClasse.value))));
         } else {
-          aFiltrados = this.aDados.filter(item => item.classe.idClasse === Number(this.cbxClasse.value));
+          aFiltrados = this.aDados.filter(item => item.series.some(serie => serie.classes.some(classe => classe.idClasse === Number(this.cbxClasse.value))));
         }
       }
 
       this.aDadosFiltrados = aFiltrados;
+      this.aDadosPaginados = new Array<any>();
+
+      for (let index = this.nPagIni; index < this.nPagTam + this.nPagIni; index++) {
+        const oElement = this.aDadosFiltrados[index];
+        if (oElement) {
+          this.aDadosPaginados.push(oElement);
+        }
+      }
+
     }
+  }
+
+  salvar(oDado: any) {
+    const nIndex = this.aRelacionamentos.findIndex(item => item.teacherId === Number(oDado.teacherId));
+
+    if (nIndex > -1) {
+      const oDegree = {
+        degreeId: Number(oDado.degreeId),
+        classes: [{ classId: Number(oDado.classId) }]
+      }
+
+      this.aRelacionamentos[nIndex].degrees.push(oDegree);
+    }
+
+    this.listar();
   }
 
   detalharAlunos(serie: any, sNomeProf: string) {
@@ -202,7 +226,6 @@ export class ProfessoresComponent implements OnInit {
       this.aClasses = res[3].classes;
       this.aSeries = res[4];
 
-      console.log(this.aRelacionamentos);
       oSubject.next();
     });
 

@@ -1,1 +1,38 @@
-<p>professores-form works!</p>
+<form [formGroup]="oForm">
+    <div class="modal-body">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect02">Professor</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect02" formControlName="cbxProfessor">
+                <option *ngFor="let oProf of aProfessores" [value]="oProf.id">
+                    {{ oProf.name }}</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Série</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" formControlName="cbxSeries">
+                <option selected value="">Todas</option>
+                <option *ngFor="let oSerie of aSeries" [value]="oSerie.id">
+                    {{ oSerie.name }}</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect02">Classe</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect02" formControlName="cbxClasses">
+                <option selected value="">Todas</option>
+                <option *ngFor="let oClasse of aClasses" [value]="oClasse.id">
+                    {{ oClasse.name }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="salvar()">Salvar</button>
+    </div>
+</form>

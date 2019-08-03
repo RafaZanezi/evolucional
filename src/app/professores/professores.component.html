@@ -94,7 +94,8 @@
 <button class="btn gera-registro" routerLink="../">Voltar</button>
 <button class="btn gera-registro" data-toggle="modal" data-target="#formModal">Adicionar</button>
 
-<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,13 +104,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <app-professores-form></app-professores-form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Send message</button>
-            </div>
+            <app-professores-form (concluir)="salvar($event)"></app-professores-form>
         </div>
     </div>
 </div>
